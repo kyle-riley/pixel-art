@@ -18,3 +18,12 @@ pens.forEach((pen) => {
     setPenColor(event.target.style.backgroundColor);
   });
 });
+async function saveimage() {
+  console.log("save image");
+  const canvas = await html2canvas(document.querySelector("#art"));
+  const data = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.download = "art.png";
+  link.href = data;
+  link.click();
+}
