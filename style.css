@@ -22,3 +22,9 @@
   height: 40px;
   border: 2px solid black;
 }
+.button {
+  background-color: lightblue;
+  margin-top: 10px;
+  font-size: 20px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
