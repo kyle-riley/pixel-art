@@ -15,7 +15,6 @@ pixels.forEach((pixel) => {
 var pens = document.querySelectorAll(".pen");
 pens.forEach((pen) => {
   pen.addEventListener("click", (event) => {
-    setPenColor(event.penColor);
-    console.log(event);
+    setPenColor(event.target.style.backgroundColor);
   });
 });
