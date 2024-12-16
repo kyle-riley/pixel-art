@@ -97,4 +97,4 @@ const defaultColors = [
   'violet'
 ];
 generatePalette(defaultColors);
-generateGrid(20, 20);
+generateGrid(50, 50);
