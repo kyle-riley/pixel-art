@@ -1,4 +1,15 @@
 let penColor = "black";
+let isDrawing = false;
+
+// Add mouse state tracking
+document.addEventListener('mousedown', () => isDrawing = true);
+document.addEventListener('mouseup', () => isDrawing = false);
+document.addEventListener('mouseleave', () => isDrawing = false);
+
+// Add touch state tracking
+document.addEventListener('touchstart', () => isDrawing = true);
+document.addEventListener('touchend', () => isDrawing = false);
+document.addEventListener('touchcancel', () => isDrawing = false);
 
 const generatePalette = colors => {
   const paletteContainer = document.querySelector("#palette");
@@ -46,7 +57,27 @@ const generateGrid = (rows, columns) => {
     for (let j = 0; j < columns; j++) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
-      pixel.addEventListener("click", event => setPixelColor(event.target));
+
+      // Handle both click and drag events
+      pixel.addEventListener('mousedown', event => setPixelColor(event.target));
+      pixel.addEventListener('mouseover', event => {
+        if (isDrawing) setPixelColor(event.target);
+      });
+
+      // Handle touch events
+      pixel.addEventListener('touchstart', event => {
+        event.preventDefault();
+        setPixelColor(event.target);
+      });
+      pixel.addEventListener('touchmove', event => {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (target?.classList.contains('pixel')) {
+          setPixelColor(target);
+        }
+      });
+
       row.appendChild(pixel);
     }
 
