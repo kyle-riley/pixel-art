@@ -1,23 +1,6 @@
-function setPixelColor(pixel) {
-  pixel.style.backgroundColor = penColor;
-}
 var penColor = "black";
-
-function setPenColor(pen) {
-  penColor = pen;
-}
-var pixels = document.querySelectorAll(".pixel");
-pixels.forEach((pixel) => {
-  pixel.addEventListener("click", (event) => {
-    setPixelColor(event.target);
-  });
-});
 var pens = document.querySelectorAll(".pen");
-pens.forEach((pen) => {
-  pen.addEventListener("click", (event) => {
-    setPenColor(event.target.style.backgroundColor);
-  });
-});
+
 async function saveimage() {
   console.log("save image");
   const canvas = await html2canvas(document.querySelector("#art"));
@@ -27,3 +10,40 @@ async function saveimage() {
   link.href = data;
   link.click();
 }
+
+function setPixelColor(pixel) {
+  pixel.style.backgroundColor = penColor;
+}
+
+function setPenColor(pen) {
+  penColor = pen;
+}
+
+function generateGrid(rows, columns) {
+  const artContainer = document.querySelector("#art");
+  artContainer.innerHTML = '';
+
+  for (let i = 0; i < rows; i++) {
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    for (let j = 0; j < columns; j++) {
+      const pixel = document.createElement('div');
+      pixel.className = 'pixel';
+      pixel.addEventListener("click", (event) => {
+        setPixelColor(event.target);
+      });
+      row.appendChild(pixel);
+    }
+
+    artContainer.appendChild(row);
+  }
+}
+
+pens.forEach((pen) => {
+  pen.addEventListener("click", (event) => {
+    setPenColor(event.target.style.backgroundColor);
+  });
+});
+
+generateGrid(10, 10);
