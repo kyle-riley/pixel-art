@@ -1,25 +1,29 @@
-var penColor = "black";
-var pens = document.querySelectorAll(".pen");
+let penColor = "black";
+const pens = document.querySelectorAll(".pen");
 
-async function saveimage() {
-  console.log("save image");
-  const canvas = await html2canvas(document.querySelector("#art"));
+const setPixelColor = pixel => pixel.style.backgroundColor = penColor;
+const setPenColor = pen => penColor = pen;
+
+const saveImage = async (elementId, filename) => {
+  if (typeof html2canvas === 'undefined') {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  const canvas = await html2canvas(document.querySelector(elementId));
   const data = canvas.toDataURL("image/png");
   const link = document.createElement("a");
-  link.download = "art.png";
+  link.download = `${filename}.png`;
   link.href = data;
   link.click();
-}
+};
 
-function setPixelColor(pixel) {
-  pixel.style.backgroundColor = penColor;
-}
-
-function setPenColor(pen) {
-  penColor = pen;
-}
-
-function generateGrid(rows, columns) {
+const generateGrid = (rows, columns) => {
   const artContainer = document.querySelector("#art");
   artContainer.innerHTML = '';
 
@@ -30,20 +34,16 @@ function generateGrid(rows, columns) {
     for (let j = 0; j < columns; j++) {
       const pixel = document.createElement('div');
       pixel.className = 'pixel';
-      pixel.addEventListener("click", (event) => {
-        setPixelColor(event.target);
-      });
+      pixel.addEventListener("click", event => setPixelColor(event.target));
       row.appendChild(pixel);
     }
 
     artContainer.appendChild(row);
   }
-}
+};
 
-pens.forEach((pen) => {
-  pen.addEventListener("click", (event) => {
-    setPenColor(event.target.style.backgroundColor);
-  });
+pens.forEach(pen => {
+  pen.addEventListener("click", event => setPenColor(event.target.style.backgroundColor));
 });
 
 generateGrid(10, 10);
