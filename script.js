@@ -1,5 +1,17 @@
 let penColor = "black";
-const pens = document.querySelectorAll(".pen");
+
+const generatePalette = colors => {
+  const paletteContainer = document.querySelector("#palette");
+  paletteContainer.innerHTML = '';
+
+  colors.forEach(color => {
+    const pen = document.createElement('div');
+    pen.className = 'pen';
+    pen.style.backgroundColor = color;
+    pen.addEventListener("click", event => setPenColor(event.target.style.backgroundColor));
+    paletteContainer.appendChild(pen);
+  });
+};
 
 const setPixelColor = pixel => pixel.style.backgroundColor = penColor;
 const setPenColor = pen => penColor = pen;
@@ -42,8 +54,16 @@ const generateGrid = (rows, columns) => {
   }
 };
 
-pens.forEach(pen => {
-  pen.addEventListener("click", event => setPenColor(event.target.style.backgroundColor));
-});
-
-generateGrid(10, 10);
+const defaultColors = [
+  'white',
+  'black',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'indigo',
+  'violet'
+];
+generatePalette(defaultColors);
+generateGrid(20, 20);
